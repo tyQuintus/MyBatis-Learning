@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.quintus.mapper.OrderMapper">
+    <resultMap id="orderMap" type="order">
+        <!-- 主键用id标签 -->
+        <id column="order_id" property="orderId"/>
+        <!-- 普通列用result标签-->
+        <result column="order_name" property="orderName"/>
+        <result column="customer_id" property="customerId"/>
+
+        <!-- 对象类型赋值
+                property 对象属性名
+                javaType 对象类型
+        -->
+        <association property="customer" javaType="customer">
+            <id column="customer_id" property="customerId"/>
+            <result column="customer_name" property="customerName"/>
+        </association>
+    </resultMap>
+
+    <select id="queryOrderById" resultMap="orderMap">
+        select * from t_order join t_customer on t_order.customer_id = t_customer.customer_id where t_order.order_id = #{id};
+    </select>
+
+
+</mapper>
